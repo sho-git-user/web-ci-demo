@@ -33,7 +33,7 @@ jobs:
       # 5. デプロイ（テストがパスした場合のみ）
       - name: Deploy to GitHub Pages
         if: success()  # テストが成功した場合のみ
-        uses: peaceiris/actions-gh-pages@v7
+        uses: peaceiris/actions-gh-pages@v4
         with:
           github_token: ${{ secrets.GITHUB_TOKEN }}
           publish_dir: ./  # index.html があるルートを指定
