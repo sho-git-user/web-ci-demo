@@ -1,21 +1,38 @@
-name: CI Test Demo
+name: CI
 
 on:
   push:
-    branches: [ main ]
+    branches:
+      - main
   pull_request:
-    branches: [ main ]
 
 jobs:
   build-and-test:
     runs-on: ubuntu-latest
+
     steps:
-      - uses: actions/checkout@v3
+      # 1. リポジトリをチェックアウト
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      # 2. Node.js をセットアップ
       - name: Setup Node.js
-        uses: actions/setup-node@v3
+        uses: actions/setup-node@v4
         with:
-          node-version: '20'
+          node-version: 20   # Node.js のバージョンを指定
+          cache: 'npm'
+
+      # 3. npm パッケージをインストール（devDependencies も含む）
       - name: Install dependencies
-        run: npm install
+        run: npm ci
+
+      # 4. Jest テストを実行
       - name: Run tests
-        run: npm test
+        run: npx jest --coverage
+
+      # 5. 必要なら結果をアップロード（任意）
+      # - name: Upload coverage report
+      #   uses: actions/upload-artifact@v3
+      #   with:
+      #     name: coverage-report
+      #     path: coverage/
