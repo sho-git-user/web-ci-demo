@@ -1,4 +1,4 @@
-name: CI
+name: CI/CD
 
 on:
   push:
@@ -7,7 +7,7 @@ on:
   pull_request:
 
 jobs:
-  build-and-test:
+  build-test-deploy:
     runs-on: ubuntu-latest
 
     steps:
@@ -29,3 +29,11 @@ jobs:
       # 4. Jest テストを実行
       - name: Run tests
         run: npm test
+
+      # 5. デプロイ（テストがパスした場合のみ）
+      - name: Deploy to GitHub Pages
+        if: success()  # テストが成功した場合のみ
+        uses: peaceiris/actions-gh-pages@v7
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          publish_dir: ./  # index.html があるルートを指定
