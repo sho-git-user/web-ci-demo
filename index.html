@@ -6,6 +6,20 @@
 </head>
 <body>
   <h1>CI Test Demo</h1>
-  <script src="script.js"></script>
+
+  <p>数値1: <input id="num1" type="number"></p>
+  <p>数値2: <input id="num2" type="number"></p>
+  <button id="calcBtn">計算</button>
+
+  <p>結果: <span id="result"></span></p>
+
+  <script>
+    const btn = document.getElementById("calcBtn");
+    btn.addEventListener("click", () => {
+      const n1 = Number(document.getElementById("num1").value);
+      const n2 = Number(document.getElementById("num2").value);
+      document.getElementById("result").textContent = n1 + n2;
+    });
+  </script>
 </body>
 </html>
