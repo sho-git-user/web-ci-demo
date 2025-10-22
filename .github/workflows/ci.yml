@@ -1,0 +1,40 @@
+name: CI/CD
+
+on:
+  push:
+    branches:
+      - main
+  pull_request:
+
+jobs:
+  build-test-deploy:
+    runs-on: ubuntu-latest
+
+    steps:
+      # 1. リポジトリをチェックアウト
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      # 2. Node.js をセットアップ
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: 'npm'
+
+      # 3. npm パッケージをインストール
+      - name: Install dependencies
+        run: npm ci
+
+      # 4. Jest テストを実行
+      - name: Run tests
+        run: npm test
+
+      # 5. デプロイ（テストがパスした場合のみ）
+      - name: Deploy to GitHub Pages
+        if: success()  # テストが成功した場合のみ
+        uses: peaceiris/actions-gh-pages@v4
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          publish_dir: ./  # index.html があるルート
+
